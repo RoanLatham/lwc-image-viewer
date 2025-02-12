@@ -8,6 +8,7 @@ import { TabConfig, ImageViewerState } from "@/types";
 export default function Home() {
   const [tabs, setTabs] = useState<TabConfig[]>([]);
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleStateChange = (state: ImageViewerState) => {
     if (!activeTabId) return;
@@ -74,9 +75,26 @@ export default function Home() {
     e.stopPropagation();
   };
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Only hide overlay if we're leaving the window
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDragging(false);
+    }
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    setIsDragging(false);
 
     const files = Array.from(e.dataTransfer.files);
     const supportedFiles = files.filter((file) => {
@@ -119,106 +137,124 @@ export default function Home() {
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
 
   return (
-    <main
-      className="min-h-screen p-4 bg-gray-50"
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-    >
-      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-        {tabs.length > 0 ? (
-          <>
-            <Tabs
-              tabs={tabs}
-              onTabChange={setActiveTabId}
-              onTabClose={handleTabClose}
-            />
-            {activeTab && (
-              <div className="p-4">
-                <ImageViewer
-                  key={activeTab.id}
-                  imageUrl={activeTab.imageUrl}
-                  imageFile={activeTab.imageFile}
-                  initialState={activeTab.state}
-                  onStateChange={handleStateChange}
+    <>
+      {isDragging && (
+        <>
+          <div className="fixed inset-0 bg-blue-500/10 backdrop-blur-sm pointer-events-none z-50" />
+          <div className="fixed inset-4 border-2 border-dashed border-blue-300 rounded-lg pointer-events-none z-50" />
+          <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-8 text-center">
+              <svg
+                className="w-16 h-16 mx-auto mb-4 text-blue-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
-              </div>
-            )}
-          </>
-        ) : (
-          <div
-            className="p-8 text-center relative"
-            onDragOver={(e) => {
-              e.preventDefault();
-              e.currentTarget.classList.add("bg-blue-50");
-            }}
-            onDragLeave={(e) => {
-              e.preventDefault();
-              e.currentTarget.classList.remove("bg-blue-50");
-            }}
-            onDrop={(e) => {
-              e.currentTarget.classList.remove("bg-blue-50");
-              handleDrop(e);
-            }}
-          >
-            <div className="pointer-events-none absolute inset-4 border-2 border-dashed border-gray-300 rounded-lg" />
-            <div className="relative">
-              <h1 className="text-3xl font-bold mb-4 text-gray-800">
-                Welcome to Image Viewer
-              </h1>
-              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                This application allows you to view images and manipulate their
-                color channels. Upload an image to get started.
+              </svg>
+              <h2 className="text-xl font-semibold text-gray-800">
+                Drop images here
+              </h2>
+              <p className="text-gray-600 mt-2">
+                Release to add images to viewer
               </p>
-              <div className="space-y-4">
-                <label
-                  htmlFor="file-upload"
-                  className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  Upload Image
-                </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept="image/*,.tga,.TGA"
-                  multiple
-                  className="hidden"
-                  onChange={handleFileUpload}
-                />
-                <div className="text-sm text-gray-500">
-                  Supported formats: JPG, PNG, GIF, WebP, TGA
-                </div>
-                <div className="text-sm text-gray-500">
-                  Or drag and drop images anywhere
-                </div>
-              </div>
-              <div className="mt-8 p-6 bg-gray-50 rounded-lg max-w-2xl mx-auto">
-                <h2 className="text-xl font-semibold mb-4 text-gray-700">
-                  Features
-                </h2>
-                <ul className="text-left text-gray-600 space-y-2">
-                  <li>• Toggle individual color channels (RGB)</li>
-                  <li>• Pan and zoom controls</li>
-                  <li>• Multiple image tabs</li>
-                  <li>• Real-time color channel manipulation</li>
-                </ul>
-              </div>
             </div>
           </div>
-        )}
-      </div>
-    </main>
+        </>
+      )}
+      <main
+        className="min-h-screen p-4 bg-gray-50"
+        onDragEnter={handleDragEnter}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+          {tabs.length > 0 ? (
+            <>
+              <Tabs
+                tabs={tabs}
+                onTabChange={setActiveTabId}
+                onTabClose={handleTabClose}
+              />
+              {activeTab && (
+                <div className="p-4">
+                  <ImageViewer
+                    key={activeTab.id}
+                    imageUrl={activeTab.imageUrl}
+                    imageFile={activeTab.imageFile}
+                    initialState={activeTab.state}
+                    onStateChange={handleStateChange}
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="p-8 text-center relative">
+              <div className="relative">
+                <h1 className="text-3xl font-bold mb-4 text-gray-800">
+                  Welcome to Image Viewer
+                </h1>
+                <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                  This application allows you to view images and manipulate
+                  their color channels. Upload an image to get started.
+                </p>
+                <div className="space-y-4">
+                  <label
+                    htmlFor="file-upload"
+                    className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors"
+                  >
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    Upload Image
+                  </label>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept="image/*,.tga,.TGA"
+                    multiple
+                    className="hidden"
+                    onChange={handleFileUpload}
+                  />
+                  <div className="text-sm text-gray-500">
+                    Supported formats: JPG, PNG, GIF, WebP, TGA
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Or drag and drop images anywhere
+                  </div>
+                </div>
+                <div className="mt-8 p-6 bg-gray-50 rounded-lg max-w-2xl mx-auto">
+                  <h2 className="text-xl font-semibold mb-4 text-gray-700">
+                    Features
+                  </h2>
+                  <ul className="text-left text-gray-600 space-y-2">
+                    <li>• Toggle individual color channels (RGB)</li>
+                    <li>• Pan and zoom controls</li>
+                    <li>• Multiple image tabs</li>
+                    <li>• Real-time color channel manipulation</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
