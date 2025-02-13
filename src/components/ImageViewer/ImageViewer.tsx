@@ -193,7 +193,7 @@ export default function ImageViewer({
             className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors
               ${
                 colorMode === "rgb"
-                  ? "bg-[linear-gradient(in_oklch,red_0%,magenta_25%,blue_50%,cyan_75%,lime_100%)] text-white"
+                  ? "bg-[linear-gradient(to_right_in_oklch,red_0%,blue_50%,lime_100%)] text-white"
                   : "bg-gradient-to-r from-gray-900 to-gray-100 text-white"
               }`}
             title={`Switch to ${
