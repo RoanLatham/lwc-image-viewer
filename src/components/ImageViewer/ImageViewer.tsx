@@ -34,6 +34,7 @@ export default function ImageViewer({
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const transformRef = useRef<any>(null);
 
   const allChannelsActive = Object.values(channels).every((value) => value);
 
@@ -46,6 +47,19 @@ export default function ImageViewer({
       });
     }
   }, [channels, viewerState, onStateChange]);
+
+  // Add keyboard shortcut handler
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "f" && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        transformRef.current?.resetTransform();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, []);
 
   const applyChannelFilters = async () => {
     const canvas = canvasRef.current;
@@ -150,6 +164,7 @@ export default function ImageViewer({
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       <TransformWrapper
+        ref={transformRef}
         initialScale={1}
         minScale={0.1}
         maxScale={8}
@@ -220,6 +235,27 @@ export default function ImageViewer({
 
         <div className="flex gap-2 items-center bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-lg">
           <button
+            onClick={() => transformRef.current?.resetTransform()}
+            className="px-3 py-1 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors flex items-center gap-1.5"
+            title="Fit to view (F)"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 8V4m0 0h4M4 4l5 5m11-5V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"
+              />
+            </svg>
+            <span>Fit</span>
+          </button>
+          <div className="w-px h-6 bg-gray-300 mx-1" />
+          <button
             onClick={toggleAllChannels}
             className={`px-3 py-1 rounded-md text-sm font-medium transition-colors
               ${
@@ -249,7 +285,7 @@ export default function ImageViewer({
           ))}
         </div>
         <div className="text-xs text-gray-500 px-2 bg-white/80 backdrop-blur-sm rounded-full py-1">
-          Shift+Click to solo a channel
+          Shift+Click to solo a channel • Press F to fit image
         </div>
       </div>
     </div>
