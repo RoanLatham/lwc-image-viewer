@@ -99,6 +99,8 @@ pnpm dev
 bun dev
 ```
 
+> **Note:** On Windows, you can also run the `Image Viewer.lnk` file to start the development server.
+
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ### Building for Production
