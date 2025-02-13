@@ -190,7 +190,7 @@ export default function Home() {
         <div
           className={`bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
             tabs.length > 0
-              ? "w-[95vw] h-[90vh] max-w-[2000px] mt-2 mx-auto"
+              ? "w-[75vw] h-[90vh] mt-2 mx-auto"
               : "w-full max-w-4xl h-auto transform-gpu"
           }`}
         >
