@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Image Viewer application is a web-based tool that allows users to view and manipulate image color channels. It features a modern, responsive interface with support for multiple image formats, including TGA files. The application is built using React and TypeScript, with a focus on user experience and performance.
+The LWC Image Viewer (Light-Weight Channel Image Viewer) is a web-based tool that allows users to view and manipulate image color channels. It features a modern, responsive interface with support for multiple image formats. The application is built using React and TypeScript, with a focus on user experience and performance.
 
 ## Features & Functionality
 
@@ -19,16 +19,8 @@ The Image Viewer application is a web-based tool that allows users to view and m
   - Individual RGB channel toggling
   - Alpha channel support
   - Black & white mode conversion
-  - Real-time channel manipulation
 
 ### User Interface
-
-- **Drag & Drop Support**
-
-  - Full-window drag and drop functionality
-  - Visual feedback during drag operations
-  - File type validation
-  - Multiple file upload support
 
 - **Tab Management**
   - Dynamic tab creation and deletion
@@ -118,10 +110,8 @@ const handleTabClick = (e: React.MouseEvent<HTMLDivElement>, tabId: string) => {
 ### Image Controls
 
 - **View Controls**
-  - Fit to view button (F key)
+  - Fit to view button and hotkey (F key)
   - Pan and zoom with mouse
-  - Reset view to original size
-  - Keyboard shortcuts for common actions
 
 ```typescript
 // Fit view functionality
@@ -146,11 +136,12 @@ useEffect(() => {
    - Multiple file selection support
    - Format validation
 
-2. **Drag & Drop**
+2. **Drag & Drop Support**
 
-   - Window-wide drop zone
-   - Visual feedback during drag
-   - Multiple file support
+   - Full-window drag and drop functionality
+   - Visual feedback during drag operations
+   - File type validation
+   - Multiple file upload support
 
 3. **Clipboard Paste**
    - Direct paste from clipboard (Ctrl+V)
@@ -227,28 +218,6 @@ useEffect(() => {
    - Prevent accidental tab closure
    - Confirm destructive actions (close all)
 
-### Future Improvements
-
-1. **Tab Management**
-
-   - Undo closed tab
-   - Tab reordering
-   - Tab groups
-   - Custom tab names
-
-2. **View Controls**
-
-   - Custom zoom levels
-   - Rotation presets
-   - View history
-   - Multiple view layouts
-
-3. **Clipboard Integration**
-   - Copy modified image to clipboard
-   - Paste format options
-   - Paste location control
-   - Multi-image paste support
-
 ## Usage Guide
 
 ### Adding Images
@@ -300,55 +269,6 @@ accept = "image/*,.tga,.TGA";
 - Configurable UI elements through className props
 - Responsive design considerations
 
-## Best Practices & Recommendations
-
-### Performance Optimization
-
-1. **State Updates**
-
-   - Use state comparison to prevent unnecessary updates
-   - Implement proper cleanup for URL objects
-   - Use key prop for component remounting
-
-2. **File Handling**
-   - Validate file types before processing
-   - Clean up object URLs to prevent memory leaks
-   - Handle multiple file uploads efficiently
-
-### Error Prevention
-
-1. **Event Handling**
-   - Always prevent default behaviors
-   - Stop event propagation where necessary
-   - Implement proper type checking
-
-## Error Handling & Troubleshooting
-
-### Common Issues
-
-1. **File Upload Failures**
-
-   ```typescript
-   const unsupportedCount = files.length - supportedFiles.length;
-   if (unsupportedCount > 0) {
-     alert(`${unsupportedCount} file(s) were not supported image formats.`);
-   }
-   ```
-
-2. **Memory Management**
-   ```typescript
-   // Clean up URL objects
-   if (closedTab?.imageUrl) {
-     URL.revokeObjectURL(closedTab.imageUrl);
-   }
-   ```
-
-### Edge Cases
-
-- Handle missing files or corrupt data
-- Manage tab state during deletion
-- Handle window drag/drop events properly
-
 ## Additional Notes
 
 ### Dependencies
@@ -357,19 +277,6 @@ accept = "image/*,.tga,.TGA";
 - TypeScript
 - Tailwind CSS
 - react-zoom-pan-pinch (for image manipulation)
-
-### Related Components
-
-- ImageViewer
-- Tabs
-- Custom TGA parser
-
-### Future Improvements
-
-1. Additional image format support
-2. Enhanced error messaging
-3. Undo/Redo functionality
-4. Image export options
 
 ### Browser Compatibility
 
