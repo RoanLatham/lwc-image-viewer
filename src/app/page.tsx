@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ImageViewer from "@/components/ImageViewer/ImageViewer";
 import Tabs from "@/components/Tabs/Tabs";
 import { TabConfig, ImageViewerState } from "@/types";
@@ -158,6 +158,44 @@ export default function Home() {
 
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
 
+  // Add clipboard paste handler
+  useEffect(() => {
+    const handlePaste = async (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      // Look for image items in clipboard
+      for (const item of Array.from(items)) {
+        if (item.type.startsWith("image/")) {
+          const file = item.getAsFile();
+          if (!file) continue;
+
+          // Create a new tab for the pasted image
+          const imageUrl = URL.createObjectURL(file);
+          const newTab: TabConfig = {
+            id: crypto.randomUUID(),
+            title: "Pasted Image",
+            imageUrl,
+            imageFile: file,
+            state: {
+              channels: { red: true, green: true, blue: true, alpha: true },
+              zoom: 1,
+              position: { x: 0, y: 0 },
+              rotation: 0,
+            },
+          };
+
+          setTabs((prevTabs) => [...prevTabs, newTab]);
+          setActiveTabId(newTab.id);
+          break; // Only handle the first image found
+        }
+      }
+    };
+
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, []);
+
   return (
     <>
       {isDragging && (
@@ -281,6 +319,7 @@ export default function Home() {
                     <li>• Pan and zoom controls</li>
                     <li>• Multiple image tabs</li>
                     <li>• Toggle color or grayscale display</li>
+                    <li>• Paste images directly from clipboard (Ctrl+V)</li>
                   </ul>
                 </div>
               </div>
