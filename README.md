@@ -2,7 +2,7 @@
 
 <div align="center">
 
-A modern, feature-rich web-based image viewer with color channel manipulation capabilities.
+The LWC Image Viewer (Light-Weight Channel Image Viewer) is a React-based image viewer focused on color channel manipulation. Built with TypeScript and Next.js.
 
 **[View Live Site](https://lwc-image-viewer.vercel.app/)**
 
