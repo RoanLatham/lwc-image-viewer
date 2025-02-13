@@ -12,7 +12,8 @@ The LWC Image Viewer (Light-Weight Channel Image Viewer) is a React-based image 
 
 </div>
 
-## ✨ Features
+<details open>
+<summary><h2>✨ Features</h2></summary>
 
 ### 🎨 Image Manipulation
 
@@ -48,11 +49,17 @@ The LWC Image Viewer (Light-Weight Channel Image Viewer) is a React-based image 
 | Fit to View | F        |
 | Paste Image | Ctrl+V   |
 
-## 🚀🌍 Getting Started
+</details>
+
+<details open>
+<summary><h2>🚀🌍 Getting Started</h2></summary>
 
 The LWC Image Viewer is hosted on Vercel and can be accessed at [lwc-image-viewer.vercel.app](https://lwc-image-viewer.vercel.app/). Simply visit the site to start using the viewer - no installation required!
 
-## 🚀🛠️ Getting Started (For Developers)
+</details>
+
+<details open>
+<summary><h2>🚀🛠️ Getting Started (For Developers)</h2></summary>
 
 ### Prerequisites
 
@@ -110,7 +117,10 @@ bun run build
 bun start
 ```
 
-## 💻 Technology Stack
+</details>
+
+<details open>
+<summary><h2>💻 Technology Stack</h2></summary>
 
 - **Framework**: [Next.js 14](https://nextjs.org/)
 - **UI Library**: [React 19](https://reactjs.org/)
@@ -118,14 +128,20 @@ bun start
 - **Image Manipulation**: [react-zoom-pan-pinch](https://www.npmjs.com/package/react-zoom-pan-pinch)
 - **Type Safety**: [TypeScript](https://www.typescriptlang.org/)
 
-## 🎯 Use Cases
+</details>
+
+<details open>
+<summary><h2>🎯 Use Cases</h2></summary>
 
 - **Digital Artists**: Analyze and manipulate image color channels
 - **Developers**: Debug image assets and color compositions
 - **Designers**: Inspect and verify image color information
 - **Content Creators**: Quick image viewing and basic manipulation
 
-## 🤝 Contributing
+</details>
+
+<details open>
+<summary><h2>🤝 Contributing</h2></summary>
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
@@ -135,9 +151,14 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+</details>
+
+<details open>
+<summary><h2>📝 License</h2></summary>
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+</details>
 
 ---
 
