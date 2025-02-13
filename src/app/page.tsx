@@ -145,6 +145,17 @@ export default function Home() {
     }
   };
 
+  const handleCloseAllTabs = () => {
+    // Clean up URL objects to prevent memory leaks
+    tabs.forEach((tab) => {
+      if (tab.imageUrl) {
+        URL.revokeObjectURL(tab.imageUrl);
+      }
+    });
+    setTabs([]);
+    setActiveTabId(null);
+  };
+
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
 
   return (
@@ -202,6 +213,7 @@ export default function Home() {
                 onTabChange={setActiveTabId}
                 onTabClose={handleTabClose}
                 onFileUpload={handleFileUpload}
+                onCloseAll={handleCloseAllTabs}
               />
               {activeTab && (
                 <div className="flex-1 p-4 min-h-0">

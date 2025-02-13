@@ -8,6 +8,7 @@ interface TabsProps {
   onTabChange?: (tabId: string) => void;
   onTabClose?: (tabId: string) => void;
   onFileUpload?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCloseAll?: () => void;
 }
 
 export default function Tabs({
@@ -16,6 +17,7 @@ export default function Tabs({
   onTabChange,
   onTabClose,
   onFileUpload,
+  onCloseAll,
 }: TabsProps) {
   const handleTabChange = (tabId: string) => {
     onTabChange?.(tabId);
@@ -29,13 +31,16 @@ export default function Tabs({
     onTabClose?.(tabId);
   };
 
-  const handleTabClick = (e: React.MouseEvent<HTMLDivElement>, tabId: string) => {
+  const handleTabClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    tabId: string
+  ) => {
     // Middle click (button 1)
     if (e.button === 1) {
       handleTabClose(e, tabId);
       return;
     }
-    
+
     // Left click (button 0)
     if (e.button === 0) {
       handleTabChange(tabId);
@@ -44,6 +49,39 @@ export default function Tabs({
 
   return (
     <div className="flex items-center space-x-2 p-3 bg-gray-100 border-b border-gray-200">
+      {tabs.length > 0 && (
+        <button
+          onClick={onCloseAll}
+          className="px-3 py-2 rounded-md text-gray-600 hover:bg-white/50 transition-colors flex items-center"
+          title="Close all tabs"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 6h10a2 2 0 012 2v10M7 7a2 2 0 00-2 2v10a2 2 0 002 2h8"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 3h10a2 2 0 012 2v10M10 3a2 2 0 00-2 2v1"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 12l4 4m0-4l-4 4"
+            />
+          </svg>
+        </button>
+      )}
       <div className="flex-1 flex space-x-2 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         {tabs.map((tab) => (
           <div
