@@ -7,9 +7,15 @@ interface TabsProps {
   tabs: TabConfig[];
   onTabChange?: (tabId: string) => void;
   onTabClose?: (tabId: string) => void;
+  onFileUpload?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function Tabs({ tabs, onTabChange, onTabClose }: TabsProps) {
+export default function Tabs({
+  tabs,
+  onTabChange,
+  onTabClose,
+  onFileUpload,
+}: TabsProps) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.id);
 
   const handleTabChange = (tabId: string) => {
@@ -63,7 +69,7 @@ export default function Tabs({ tabs, onTabChange, onTabClose }: TabsProps) {
         ))}
       </div>
       <label
-        htmlFor="add-image"
+        htmlFor="add-tab-image"
         className="px-3 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer flex items-center"
       >
         <svg
@@ -81,19 +87,12 @@ export default function Tabs({ tabs, onTabChange, onTabClose }: TabsProps) {
         </svg>
       </label>
       <input
-        id="add-image"
+        id="add-tab-image"
         type="file"
         accept="image/*,.tga,.TGA"
         multiple
         className="hidden"
-        onChange={(e) => {
-          const fileInput = document.getElementById(
-            "file-upload"
-          ) as HTMLInputElement;
-          if (fileInput) {
-            fileInput.click();
-          }
-        }}
+        onChange={onFileUpload}
       />
     </div>
   );

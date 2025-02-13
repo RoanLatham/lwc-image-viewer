@@ -181,6 +181,7 @@ export default function Home() {
                 tabs={tabs}
                 onTabChange={setActiveTabId}
                 onTabClose={handleTabClose}
+                onFileUpload={handleFileUpload}
               />
               {activeTab && (
                 <div className="p-4">
@@ -198,7 +199,7 @@ export default function Home() {
             <div className="p-8 text-center relative">
               <div className="relative">
                 <h1 className="text-3xl font-bold mb-4 text-gray-800">
-                  Welcome to Image Viewer
+                  Welcome to LWC Image Viewer
                 </h1>
                 <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
                   This application allows you to view images and manipulate
@@ -244,10 +245,10 @@ export default function Home() {
                     Features
                   </h2>
                   <ul className="text-left text-gray-600 space-y-2">
-                    <li>• Toggle individual color channels (RGB)</li>
+                    <li>• Toggle individual color channels (RGBA)</li>
                     <li>• Pan and zoom controls</li>
                     <li>• Multiple image tabs</li>
-                    <li>• Real-time color channel manipulation</li>
+                    <li>• Toggle color or grayscale display</li>
                   </ul>
                 </div>
               </div>
