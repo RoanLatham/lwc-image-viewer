@@ -12,6 +12,8 @@ interface ImageViewerProps {
   onStateChange?: (state: ImageViewerState) => void;
 }
 
+type TransformWrapperType = React.ComponentRef<typeof TransformWrapper>;
+
 export default function ImageViewer({
   imageUrl,
   imageFile,
@@ -27,14 +29,14 @@ export default function ImageViewer({
     }
   );
   const [colorMode, setColorMode] = useState<"rgb" | "bw">("rgb");
-  const [viewerState, setViewerState] = useState({
+  const viewerState = {
     zoom: initialState?.zoom || 1,
     position: initialState?.position || { x: 0, y: 0 },
     rotation: initialState?.rotation || 0,
-  });
+  };
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const transformRef = useRef<TransformWrapper | null>(null);
+  const transformRef = useRef<TransformWrapperType>(null);
 
   const allChannelsActive = Object.values(channels).every((value) => value);
 
@@ -150,7 +152,7 @@ export default function ImageViewer({
   };
 
   const toggleAllChannels = () => {
-    setChannels((prev) => {
+    setChannels(() => {
       const newValue = !allChannelsActive;
       return {
         red: newValue,
