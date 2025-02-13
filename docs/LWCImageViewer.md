@@ -95,6 +95,160 @@ const handleDrop = (e: React.DragEvent) => {
 
 Purpose: Manage drag and drop functionality with visual feedback.
 
+### Tab Management
+
+- **Tab Actions**
+  - Middle-click to close individual tabs
+  - "Close All" button to clear all tabs at once
+  - Automatic cleanup of image resources
+  - Keyboard shortcuts for common actions
+
+```typescript
+// Middle-click tab closing
+const handleTabClick = (e: React.MouseEvent<HTMLDivElement>, tabId: string) => {
+  if (e.button === 1) {
+    // Middle click
+    handleTabClose(e, tabId);
+    return;
+  }
+  // ... other click handling
+};
+```
+
+### Image Controls
+
+- **View Controls**
+  - Fit to view button (F key)
+  - Pan and zoom with mouse
+  - Reset view to original size
+  - Keyboard shortcuts for common actions
+
+```typescript
+// Fit view functionality
+useEffect(() => {
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key.toLowerCase() === "f" && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      transformRef.current?.resetTransform();
+    }
+  };
+
+  window.addEventListener("keydown", handleKeyPress);
+  return () => window.removeEventListener("keydown", handleKeyPress);
+}, []);
+```
+
+### Image Input Methods
+
+1. **File Upload Button**
+
+   - Traditional file picker dialog
+   - Multiple file selection support
+   - Format validation
+
+2. **Drag & Drop**
+
+   - Window-wide drop zone
+   - Visual feedback during drag
+   - Multiple file support
+
+3. **Clipboard Paste**
+   - Direct paste from clipboard (Ctrl+V)
+   - Supports images copied from:
+     - Other applications
+     - Screenshots
+     - Web browsers
+   - Automatic tab creation for pasted images
+
+```typescript
+// Clipboard paste handling
+useEffect(() => {
+  const handlePaste = async (e: ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    for (const item of Array.from(items)) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (!file) continue;
+
+        // Create new tab for pasted image
+        const imageUrl = URL.createObjectURL(file);
+        const newTab: TabConfig = {
+          id: crypto.randomUUID(),
+          title: "Pasted Image",
+          imageUrl,
+          imageFile: file,
+          state: {
+            channels: { red: true, green: true, blue: true, alpha: true },
+            zoom: 1,
+            position: { x: 0, y: 0 },
+            rotation: 0,
+          },
+        };
+
+        setTabs((prevTabs) => [...prevTabs, newTab]);
+        setActiveTabId(newTab.id);
+        break;
+      }
+    }
+  };
+
+  window.addEventListener("paste", handlePaste);
+  return () => window.removeEventListener("paste", handlePaste);
+}, []);
+```
+
+### Keyboard Shortcuts
+
+| Action      | Shortcut |
+| ----------- | -------- |
+| Fit to View | F        |
+| Paste Image | Ctrl+V   |
+
+### Best Practices
+
+1. **Memory Management**
+
+   - Clean up object URLs when closing tabs
+   - Proper event listener cleanup
+   - State cleanup on component unmount
+
+2. **User Experience**
+
+   - Visual feedback for all actions
+   - Consistent behavior across input methods
+   - Intuitive keyboard shortcuts
+   - Clear visual indicators for active states
+
+3. **Error Prevention**
+   - Validate input types
+   - Handle edge cases (empty clipboard, unsupported formats)
+   - Prevent accidental tab closure
+   - Confirm destructive actions (close all)
+
+### Future Improvements
+
+1. **Tab Management**
+
+   - Undo closed tab
+   - Tab reordering
+   - Tab groups
+   - Custom tab names
+
+2. **View Controls**
+
+   - Custom zoom levels
+   - Rotation presets
+   - View history
+   - Multiple view layouts
+
+3. **Clipboard Integration**
+   - Copy modified image to clipboard
+   - Paste format options
+   - Paste location control
+   - Multi-image paste support
+
 ## Usage Guide
 
 ### Adding Images
