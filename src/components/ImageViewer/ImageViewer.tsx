@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Channel, ImageViewerState } from "@/types";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { loadTGA } from "@/utils/tgaParser";
@@ -34,7 +34,7 @@ export default function ImageViewer({
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const transformRef = useRef<any>(null);
+  const transformRef = useRef<TransformWrapper | null>(null);
 
   const allChannelsActive = Object.values(channels).every((value) => value);
 
@@ -61,7 +61,7 @@ export default function ImageViewer({
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, []);
 
-  const applyChannelFilters = async () => {
+  const applyChannelFilters = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -125,14 +125,14 @@ export default function ImageViewer({
     }
 
     ctx.putImageData(imageData, 0, 0);
-  };
+  }, [channels, imageUrl, colorMode, imageFile]);
 
   useEffect(() => {
     applyChannelFilters();
-  }, [channels, imageUrl, colorMode, imageFile]);
+  }, [channels, imageUrl, colorMode, imageFile, applyChannelFilters]);
 
   const toggleChannel = (channel: keyof Channel, solo: boolean) => {
-    setChannels((prev) => {
+    setChannels((prevChannels) => {
       if (solo) {
         return {
           red: channel === "red",
@@ -142,8 +142,8 @@ export default function ImageViewer({
         };
       } else {
         return {
-          ...prev,
-          [channel]: !prev[channel],
+          ...prevChannels,
+          [channel]: !prevChannels[channel],
         };
       }
     });
