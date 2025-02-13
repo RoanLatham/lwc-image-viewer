@@ -30,8 +30,8 @@ export default function Tabs({
   };
 
   return (
-    <div className="flex items-center space-x-2 p-2 bg-gray-100 rounded-t-lg">
-      <div className="flex-1 flex space-x-2 overflow-x-auto">
+    <div className="flex items-center space-x-2 p-3 bg-gray-100 border-b border-gray-200">
+      <div className="flex-1 flex space-x-2 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         {tabs.map((tab) => (
           <div
             key={tab.id}

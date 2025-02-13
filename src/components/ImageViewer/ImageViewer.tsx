@@ -148,19 +148,25 @@ export default function ImageViewer({
   };
 
   return (
-    <div className="relative w-full h-full min-h-[400px]">
+    <div className="relative w-full h-full">
       <TransformWrapper
         initialScale={1}
-        minScale={0.5}
-        maxScale={4}
+        minScale={0.1}
+        maxScale={8}
         centerOnInit
       >
-        <TransformComponent>
-          <canvas ref={canvasRef} className="max-w-full h-auto" />
+        <TransformComponent
+          wrapperClass="!w-full !h-full"
+          contentClass="flex items-center justify-center w-full h-full"
+        >
+          <canvas
+            ref={canvasRef}
+            className="max-w-full max-h-full object-contain"
+          />
         </TransformComponent>
       </TransformWrapper>
 
-      <div className="absolute bottom-4 left-4 flex flex-col items-start gap-2">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
         <div className="flex gap-2 items-center bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg">
           <span className="text-sm text-gray-500 mr-1">Display Mode:</span>
           <button
@@ -240,7 +246,7 @@ export default function ImageViewer({
             </button>
           ))}
         </div>
-        <div className="text-xs text-gray-500 px-2">
+        <div className="text-xs text-gray-500 px-2 bg-white/80 backdrop-blur-sm rounded-full py-1">
           Shift+Click to solo a channel
         </div>
       </div>

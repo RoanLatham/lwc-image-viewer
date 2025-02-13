@@ -179,15 +179,23 @@ export default function Home() {
         </>
       )}
       <main
-        className="min-h-screen p-4 bg-gray-50"
+        className={`min-h-screen p-4 bg-gray-50 transition-all duration-300 ${
+          tabs.length > 0 ? "pt-2" : "flex items-center justify-center"
+        }`}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <div
+          className={`bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
+            tabs.length > 0
+              ? "w-[95vw] h-[90vh] max-w-[2000px] mt-2 mx-auto"
+              : "w-full max-w-4xl"
+          }`}
+        >
           {tabs.length > 0 ? (
-            <>
+            <div className="flex flex-col h-full">
               <Tabs
                 tabs={tabs}
                 activeTabId={activeTabId}
@@ -196,7 +204,7 @@ export default function Home() {
                 onFileUpload={handleFileUpload}
               />
               {activeTab && (
-                <div className="p-4">
+                <div className="flex-1 p-4 min-h-0">
                   <ImageViewer
                     key={activeTab.id}
                     imageUrl={activeTab.imageUrl}
@@ -206,7 +214,7 @@ export default function Home() {
                   />
                 </div>
               )}
-            </>
+            </div>
           ) : (
             <div className="p-8 text-center relative">
               <div className="relative">
