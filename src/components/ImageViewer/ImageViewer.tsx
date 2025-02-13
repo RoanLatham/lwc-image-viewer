@@ -148,7 +148,7 @@ export default function ImageViewer({
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full flex items-center justify-center">
       <TransformWrapper
         initialScale={1}
         minScale={0.1}
@@ -157,12 +157,14 @@ export default function ImageViewer({
       >
         <TransformComponent
           wrapperClass="!w-full !h-full"
-          contentClass="flex items-center justify-center w-full h-full"
+          contentClass="!flex !items-center !justify-center !w-full !h-full"
         >
-          <canvas
-            ref={canvasRef}
-            className="max-w-full max-h-full object-contain"
-          />
+          <div className="flex items-center justify-center w-full h-full p-4">
+            <canvas
+              ref={canvasRef}
+              className="max-w-[95%] max-h-[95%] w-auto h-auto object-contain"
+            />
+          </div>
         </TransformComponent>
       </TransformWrapper>
 
