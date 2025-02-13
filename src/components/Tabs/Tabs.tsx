@@ -22,11 +22,24 @@ export default function Tabs({
   };
 
   const handleTabClose = (
-    e: React.MouseEvent<HTMLButtonElement>,
+    e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
     tabId: string
   ) => {
     e.stopPropagation();
     onTabClose?.(tabId);
+  };
+
+  const handleTabClick = (e: React.MouseEvent<HTMLDivElement>, tabId: string) => {
+    // Middle click (button 1)
+    if (e.button === 1) {
+      handleTabClose(e, tabId);
+      return;
+    }
+    
+    // Left click (button 0)
+    if (e.button === 0) {
+      handleTabChange(tabId);
+    }
   };
 
   return (
@@ -35,8 +48,9 @@ export default function Tabs({
         {tabs.map((tab) => (
           <div
             key={tab.id}
-            onClick={() => handleTabChange(tab.id)}
-            className={`group px-4 py-2 rounded-md transition-colors whitespace-nowrap flex items-center gap-2 cursor-pointer
+            onMouseDown={(e) => handleTabClick(e, tab.id)}
+            onAuxClick={(e) => handleTabClick(e, tab.id)}
+            className={`group px-4 py-2 rounded-md transition-colors whitespace-nowrap flex items-center gap-2 cursor-pointer select-none
               ${
                 activeTabId === tab.id
                   ? "bg-white text-blue-600 shadow-sm"

@@ -191,7 +191,7 @@ export default function Home() {
           className={`bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
             tabs.length > 0
               ? "w-[95vw] h-[90vh] max-w-[2000px] mt-2 mx-auto"
-              : "w-full max-w-4xl"
+              : "w-full max-w-4xl h-auto transform-gpu"
           }`}
         >
           {tabs.length > 0 ? (
@@ -216,7 +216,7 @@ export default function Home() {
               )}
             </div>
           ) : (
-            <div className="p-8 text-center relative">
+            <div className="p-8 text-center relative transition-all duration-300 transform-gpu">
               <div className="relative">
                 <h1 className="text-3xl font-bold mb-4 text-gray-800">
                   Welcome to LWC Image Viewer
