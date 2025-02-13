@@ -1,0 +1,57 @@
+<svg
+  width="512"
+  height="512"
+  viewBox="0 0 512 512"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Main Image Frame -->
+  <rect
+    x="8"
+    y="8"
+    width="256"
+    height="256"
+    rx="24"
+    fill="#F8FAFC"
+    stroke="#94A3B8"
+    stroke-width="16"
+  />
+
+  <!-- RGB Circles with Blend Modes -->
+  <g style="mix-blend-mode: multiply">
+    <!-- Red Channel -->
+    <circle cx="100" cy="136" r="80" fill="#EF4444" opacity="0.85" />
+
+    <!-- Green Channel -->
+    <circle cx="172" cy="100" r="80" fill="#22C55E" opacity="0.85" />
+
+    <!-- Blue Channel -->
+    <circle cx="136" cy="172" r="80" fill="#3B82F6" opacity="0.85" />
+  </g>
+
+  <!-- Corner Accents -->
+  <path
+    d="M24 48V24h24"
+    stroke="#475569"
+    stroke-width="16"
+    stroke-linecap="round"
+  />
+  <path
+    d="M248 48V24h-24"
+    stroke="#475569"
+    stroke-width="16"
+    stroke-linecap="round"
+  />
+  <path
+    d="M24 224v24h24"
+    stroke="#475569"
+    stroke-width="16"
+    stroke-linecap="round"
+  />
+  <path
+    d="M248 224v24h-24"
+    stroke="#475569"
+    stroke-width="16"
+    stroke-linecap="round"
+  />
+</svg> 
