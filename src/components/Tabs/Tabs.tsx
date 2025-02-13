@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { TabConfig } from "@/types";
 
 interface TabsProps {
   tabs: TabConfig[];
+  activeTabId: string | null;
   onTabChange?: (tabId: string) => void;
   onTabClose?: (tabId: string) => void;
   onFileUpload?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,14 +12,12 @@ interface TabsProps {
 
 export default function Tabs({
   tabs,
+  activeTabId,
   onTabChange,
   onTabClose,
   onFileUpload,
 }: TabsProps) {
-  const [activeTab, setActiveTab] = useState(tabs[0]?.id);
-
   const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId);
     onTabChange?.(tabId);
   };
 
@@ -27,7 +25,7 @@ export default function Tabs({
     e: React.MouseEvent<HTMLButtonElement>,
     tabId: string
   ) => {
-    e.stopPropagation(); // Prevent tab activation when closing
+    e.stopPropagation();
     onTabClose?.(tabId);
   };
 
@@ -40,7 +38,7 @@ export default function Tabs({
             onClick={() => handleTabChange(tab.id)}
             className={`group px-4 py-2 rounded-md transition-colors whitespace-nowrap flex items-center gap-2 cursor-pointer
               ${
-                activeTab === tab.id
+                activeTabId === tab.id
                   ? "bg-white text-blue-600 shadow-sm"
                   : "text-gray-600 hover:bg-white/50"
               }`}

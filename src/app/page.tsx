@@ -27,6 +27,9 @@ export default function Home() {
     const files = event.target.files;
     if (!files) return;
 
+    let lastTabId: string | null = null;
+
+    // Process files sequentially to maintain order
     Array.from(files).forEach((file) => {
       const imageUrl = URL.createObjectURL(file);
       const newTab: TabConfig = {
@@ -42,11 +45,14 @@ export default function Home() {
         },
       };
 
+      lastTabId = newTab.id;
       setTabs((prevTabs) => [...prevTabs, newTab]);
-      if (!activeTabId) {
-        setActiveTabId(newTab.id);
-      }
     });
+
+    // Set the last tab as active after all tabs are added
+    if (lastTabId) {
+      setActiveTabId(lastTabId);
+    }
   };
 
   const handleTabClose = (tabId: string) => {
@@ -106,6 +112,8 @@ export default function Home() {
       );
     });
 
+    let lastTabId: string | null = null;
+
     supportedFiles.forEach((file) => {
       const imageUrl = URL.createObjectURL(file);
       const newTab: TabConfig = {
@@ -121,11 +129,14 @@ export default function Home() {
         },
       };
 
+      lastTabId = newTab.id;
       setTabs((prevTabs) => [...prevTabs, newTab]);
-      if (!activeTabId) {
-        setActiveTabId(newTab.id);
-      }
     });
+
+    // Set the last tab as active after all tabs are added
+    if (lastTabId) {
+      setActiveTabId(lastTabId);
+    }
 
     // Show feedback if any files were unsupported
     const unsupportedCount = files.length - supportedFiles.length;
@@ -179,6 +190,7 @@ export default function Home() {
             <>
               <Tabs
                 tabs={tabs}
+                activeTabId={activeTabId}
                 onTabChange={setActiveTabId}
                 onTabClose={handleTabClose}
                 onFileUpload={handleFileUpload}
