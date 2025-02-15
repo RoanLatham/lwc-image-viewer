@@ -6,6 +6,7 @@
     - [Loading Images](#loading-images)
     - [Working with Tabs](#working-with-tabs)
     - [Image Controls](#image-controls)
+    - [Input Methods](#input-methods)
     - [Keyboard Shortcuts](#keyboard-shortcuts)
   - [Technical Architecture](#technical-architecture)
     - [System Overview](#system-overview)
@@ -28,7 +29,7 @@
 
 ## Overview
 
-The LWC Image Viewer (Light-Weight Channel Image Viewer) is a React-based image viewer focused on color channel manipulation. Built with TypeScript and Next.js, it provides a modular architecture centered around three main components: ImageViewer, Tabs, and the main App component.
+The LWC Image Viewer (Light-Weight Channel Image Viewer) is a React-based image viewer focused on color channel manipulation. Built with TypeScript and Next.js, it provides a modular architecture centered around three main components: ImageViewer, Tabs, and the main App component. The application supports various image formats and provides intuitive controls for image manipulation and analysis.
 
 ## Usage Guide
 
@@ -67,19 +68,50 @@ You can load images in three ways:
 
    - Toggle individual RGBA channels using the channel buttons
    - Shift+Click a channel to solo it (turn off all others)
-   - Shift+Click on a soloed channel to show all channels again
-   - All channels button to show all channels
+   - "All" button to toggle all channels simultaneously
+   - Visual feedback for active/inactive states
 
 2. **View Controls**
 
    - Pan: Click and drag the image
-   - Zoom: Mouse wheel, pinch gesture or double click the image
+   - Zoom: Mouse wheel or pinch gesture
    - Fit to View: Press F key or click the fit button
+   - Reset View: Double-click the image
 
-3. **Display Mode**
-   - Toggle between RGB and B&W modes using the mode switch button
+3. **Tab Management**
+
+   - Middle-click to close individual tabs
+   - Close All button (stacked papers icon) to clear workspace
+   - Automatic tab switching on close
+   - Tab state persistence
+
+4. **Display Mode**
+   - Toggle between RGB and B&W modes
    - RGB shows full color with active channels
    - B&W shows grayscale representation
+   - Real-time channel mixing
+
+### Input Methods
+
+1. **File Upload**
+
+   - Traditional file picker
+   - Multiple file selection
+   - Format validation
+   - Progress feedback
+
+2. **Drag and Drop**
+
+   - Window-wide drop zone
+   - Visual feedback during drag
+   - Multiple file support
+   - Format validation
+
+3. **Clipboard Integration**
+   - Direct paste support (Ctrl+V/Cmd+V)
+   - Screenshot support
+   - Browser image support
+   - Automatic tab creation
 
 ### Keyboard Shortcuts
 
@@ -219,7 +251,7 @@ Key Responsibilities:
 
 ### 2. ImageViewer Component
 
-Core image manipulation component with canvas-based rendering.
+Core image manipulation component with canvas-based rendering and state management.
 
 ```typescript
 interface ImageViewerProps {
@@ -228,31 +260,15 @@ interface ImageViewerProps {
   initialState?: ImageViewerState;
   onStateChange?: (state: ImageViewerState) => void;
 }
-
-interface Channel {
-  red: boolean;
-  green: boolean;
-  blue: boolean;
-  alpha: boolean;
-}
 ```
 
-Internal State Management:
+Key Features:
 
-```typescript
-const [channels, setChannels] = useState<Channel>(
-  initialState?.channels ?? {
-    red: true,
-    green: true,
-    blue: true,
-    alpha: true,
-  }
-);
-const [colorMode, setColorMode] = useState<"rgb" | "bw">("rgb");
-const [isLoading, setIsLoading] = useState(true);
-const canvasRef = useRef<HTMLCanvasElement>(null);
-const transformRef = useRef<any>(null);
-```
+- Real-time channel manipulation
+- Transform controls (pan, zoom, fit)
+- Color mode switching
+- Clipboard integration
+- Keyboard shortcuts
 
 ### 3. Tabs Component
 
