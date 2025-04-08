@@ -10,7 +10,7 @@
     "deploy": "deploy.bat"
   },
   "dependencies": {
-    "next": "15.1.7",
+    "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-zoom-pan-pinch": "^3.7.0"
